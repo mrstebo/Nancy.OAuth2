@@ -6,9 +6,9 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Nancy.OAuth2.IntegrationTests")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("A Nancy module for adding OAuth2 support")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("mrstebo")]
 [assembly: AssemblyProduct("Nancy.OAuth2.IntegrationTests")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
