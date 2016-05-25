@@ -11,15 +11,15 @@ public class Bootstrapper : DefaultNancyBootstrapper
 {
     protected override void RequestStartup(TinyIoCContainer container, IPipelines pipelines, NancyContext context)
     {
-      // Default configuration for OAuth.Enable()
-      OAuth.Enable(config =>
-      {
-          config.Base = "/oauth";
-          config.AuthorizationRequestRoute = "/authorize";
-          config.AuthorizationAllowRoute = "/allow";
-          config.AuthorizationDenyRoute = "/deny";
-          config.TokenRoute = "/token";
-      });
+        // Default configuration for OAuth.Enable()
+        OAuth.Enable(config =>
+        {
+            config.Base = "/oauth";
+            config.AuthorizationRequestRoute = "/authorize";
+            config.AuthorizationAllowRoute = "/allow";
+            config.AuthorizationDenyRoute = "/deny";
+            config.TokenRoute = "/token";
+        });
 
         base.RequestStartup(container, pipelines, context);
     }
