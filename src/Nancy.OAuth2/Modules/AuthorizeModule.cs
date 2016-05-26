@@ -19,6 +19,7 @@ namespace Nancy.OAuth2.Modules
         {
             _service = service;
             _errorResponseBuilder = errorResponseBuilder;
+
             this.RequiresAuthentication();
 
             Get["/", ctx => OAuth.IsEnabled] = _ => Index();
