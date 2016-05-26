@@ -64,6 +64,84 @@ namespace Nancy.OAuth2.IntegrationTests.Modules
             Assert.AreEqual("Authorize", response.Context.NegotiationContext.ViewName);
         }
 
+        [Test]
+        public void Post_Allow_When_Not_Logged_In_Should_Return_401()
+        {
+            var browser = GetBrowser();
+
+            var response = browser.Post("/oauth/authorize/allow", with => with.HttpRequest());
+
+            Assert.AreEqual(HttpStatusCode.Unauthorized, response.StatusCode);
+        }
+
+        [Test]
+        public void Post_Allow_When_No_Request_In_Session_Should_Return_500()
+        {
+            var browser = GetAuthenticatedBrowser("testuser");
+
+            var response = browser.Post("/oauth/authorize/allow", with => with.HttpRequest());
+
+            Assert.AreEqual(HttpStatusCode.InternalServerError, response.StatusCode);
+        }
+
+        [Test]
+        public void Post_Allow_Should_Redirect_To_RedirectUrl_With_AuthorizationResponse_In_Query_String()
+        {
+            var browser = GetAuthenticatedBrowser("testuser", new Dictionary<string, object>
+            {
+                {
+                    "testuser", new AuthorizationRequest
+                    {
+                        RedirectUrl = "http://localhost/callback",
+                        State = "123"
+                    }
+                }
+            });
+
+            var response = browser.Post("/oauth/authorize/allow", with => with.HttpRequest());
+
+            response.ShouldHaveRedirectedTo("http://localhost:80/callback??code=12345678&state=123");
+        }
+
+        [Test]
+        public void Post_Deny_When_Not_Logged_In_Should_Return_401()
+        {
+            var browser = GetBrowser();
+
+            var response = browser.Post("/oauth/authorize/deny", with => with.HttpRequest());
+
+            Assert.AreEqual(HttpStatusCode.Unauthorized, response.StatusCode);
+        }
+
+        [Test]
+        public void Post_Deny_When_No_Request_In_Session_Should_Return_500()
+        {
+            var browser = GetAuthenticatedBrowser("testuser");
+
+            var response = browser.Post("/oauth/authorize/deny", with => with.HttpRequest());
+
+            Assert.AreEqual(HttpStatusCode.InternalServerError, response.StatusCode);
+        }
+
+        [Test]
+        public void Post_Deny_Should_Redirect_To_RedirectUrl_With_ErrorResponse_In_Query_String()
+        {
+            var browser = GetAuthenticatedBrowser("testuser", new Dictionary<string, object>
+            {
+                {
+                    "testuser", new AuthorizationRequest
+                    {
+                        RedirectUrl = "http://localhost/callback",
+                        State = "123"
+                    }
+                }
+            });
+
+            var response = browser.Post("/oauth/authorize/deny", with => with.HttpRequest());
+
+            response.ShouldHaveRedirectedTo("http://localhost/callback?error=access_denied&errordescription=The+user+denied+your+request.&state=123");
+        }
+        
         private static Browser GetBrowser()
         {
             return new Browser(with =>
