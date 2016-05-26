@@ -81,7 +81,7 @@ namespace Nancy.OAuth2.IntegrationTests.Modules
             });
         }
 
-        private static Browser GetAuthenticatedBrowser(string username)
+        private static Browser GetAuthenticatedBrowser(string username, IDictionary<string, object> session = null)
         {
             return new Browser(with =>
             {
@@ -94,7 +94,7 @@ namespace Nancy.OAuth2.IntegrationTests.Modules
                 with.RequestStartup((container, pipelines, context) =>
                 {
                     context.CurrentUser = new TestUserIdentity {UserName = username};
-                    pipelines.WithSession(new Dictionary<string, object>());
+                    pipelines.WithSession(session ?? new Dictionary<string, object>());
                 });
             });
         }
