@@ -18,7 +18,7 @@ namespace Nancy.OAuth2.Modules
             _service = service;
             _errorResponseBuilder = errorResponseBuilder;
 
-            Post["/"] = _ => CreateToken();
+            Post["/", ctx => OAuth.IsEnabled] = _ => CreateToken();
         }
 
         private dynamic CreateToken()
