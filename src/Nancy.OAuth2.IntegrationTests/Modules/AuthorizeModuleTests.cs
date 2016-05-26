@@ -40,11 +40,11 @@ namespace Nancy.OAuth2.IntegrationTests.Modules
                 with.HttpRequest();
                 with.Query("response_type", "code");
                 with.Query("client_id", "bad");
-                with.Query("redirect_url", "http://localhost/redirect");
+                with.Query("redirect_url", "http://localhost/callback");
                 with.Query("state", "123");
             });
 
-            response.ShouldHaveRedirectedTo("http://localhost/redirect?error=invalid_request&errordescription=The+request+is+missing+a+required+parameter%2c+includes+an+unsupported+parameter+or+parameter+value%2c+or+is+otherwise+malformed.&state=123");
+            response.ShouldHaveRedirectedTo("http://localhost/callback?error=invalid_request&errordescription=The+request+is+missing+a+required+parameter%2c+includes+an+unsupported+parameter+or+parameter+value%2c+or+is+otherwise+malformed.&state=123");
         }
 
         [Test]
