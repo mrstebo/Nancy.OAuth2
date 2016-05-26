@@ -57,6 +57,7 @@
     <Compile Include="Models\OAuthValidationResult.cs" />
     <Compile Include="Models\TokenRequest.cs" />
     <Compile Include="Models\TokenResponse.cs" />
+    <Compile Include="Modules\AuthorizeModule.cs" />
     <Compile Include="Modules\TokenModule.cs" />
     <Compile Include="OAuth.cs" />
     <Compile Include="OAuthConfiguration.cs" />
