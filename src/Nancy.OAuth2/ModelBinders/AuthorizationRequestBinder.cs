@@ -27,7 +27,7 @@ namespace Nancy.OAuth2.ModelBinders
 
         private static IEnumerable<string> SplitAndRemoveEmptyEntries(string s)
         {
-            return s.Split(new[] {" "}, StringSplitOptions.RemoveEmptyEntries);
+            return (s ?? "").Split(new[] {" "}, StringSplitOptions.RemoveEmptyEntries);
         }
     }
 }

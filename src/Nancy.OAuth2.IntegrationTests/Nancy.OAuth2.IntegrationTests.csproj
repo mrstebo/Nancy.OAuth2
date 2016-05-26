@@ -65,9 +65,12 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="BootstrapperExtensions.cs" />
+    <Compile Include="Modules\AuthorizeModuleTests.cs" />
     <Compile Include="Modules\TokenModuleTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StubFactory.cs" />
+    <Compile Include="TestRootPathProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Nancy.OAuth2\Nancy.OAuth2.csproj">
@@ -77,6 +80,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Authorize.html" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
