@@ -64,7 +64,6 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
-    <Compile Include="Bootstrapper.cs" />
     <Compile Include="BootstrapperExtensions.cs" />
     <Compile Include="Modules\AuthorizeModuleTests.cs" />
     <Compile Include="Modules\TokenModuleTests.cs" />
