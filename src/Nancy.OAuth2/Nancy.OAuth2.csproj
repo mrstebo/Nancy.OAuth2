@@ -49,7 +49,10 @@
     <Compile Include="ErrorResponseBuilder.cs" />
     <Compile Include="ExpressionExtensions.cs" />
     <Compile Include="GrantTypes.cs" />
+    <Compile Include="ModelBinders\AuthorizationRequestBinder.cs" />
     <Compile Include="ModelBinders\TokenRequestBinder.cs" />
+    <Compile Include="Models\AuthorizationRequest.cs" />
+    <Compile Include="Models\AuthorizationResponse.cs" />
     <Compile Include="Models\ErrorResponse.cs" />
     <Compile Include="Models\OAuthValidationResult.cs" />
     <Compile Include="Models\TokenRequest.cs" />
