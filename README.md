@@ -60,10 +60,61 @@ public class TokenEndpointService : ITokenEndpointService
 }
 ```
 
+### Authorization
 
-## Todo
+If you want to enable the /authorize endpoints then you will need to create a
+class that implements the `IAuthorizationEndpointService` interface.
 
-- Implement the Authorization module.
+```csharp
+public class AuthorizationEndpointService : IAuthorizationEndpointService
+{
+    private readonly IOAuthService _oauthService;
+    private readonly IUserService _userService;
 
+    public AuthorizationEndpointService(
+        IOAuthService oauthService,
+        IUserService userService)
+    {
+        _oauthService = oauthService;
+        _userService = userService;
+    }
+
+    public string GenerateAuthorizationToken(AuthorizationRequest request, NancyContext context)
+    {
+        var client = _oauthService.FindClientById(request.ClientId);
+        var user = _userService.FindUserByUsername(context.CurrentUser.UserName);
+        var authCode = _oauthService.CreateAuthCode(client, user);
+
+        return authCode.Token;
+    }
+
+    public OAuthValidationResult ValidateRequest(AuthorizationRequest request, NancyContext context)
+    {
+        var client = _oauthService.FindClientById(request.ClientId);
+
+        if (client == null)
+            return ErrorType.InvalidClient;
+
+        // Perform validation of the request for the client e.g.
+        // - Is the RedirectUri allowed?
+        // - Does it support the authorization_code grant?
+
+        return ErrorType.None;
+    }
+
+    public Tuple<string, object> GetAuthorizationView(AuthorizationRequest request, NancyContext context)
+    {
+        var client = _oauthService.FindClientById(request.ClientId);
+        var permissions = _oauthService.GetClientPermissions(request.ClientId);
+
+        return new Tuple<string, object>("Authorize", new AuthorizeViewModel
+        {
+            Name = client.Name,
+            Description = client.Description,
+            Permissions = permissions
+        });
+    }
+}
+```
 
 _Any contributions will be greatly appreciated!_
