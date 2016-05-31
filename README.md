@@ -31,7 +31,7 @@ public class Bootstrapper : DefaultNancyBootstrapper
 }
 ```
 
-Override the `TokenEndpointService`
+Create a class that implements the `ITokenEndpointService` interface.
 
 ```csharp
 public class TokenEndpointService : ITokenEndpointService
@@ -42,7 +42,8 @@ public class TokenEndpointService : ITokenEndpointService
         switch (request.GrantType)
         {
             case GrantTypes.Password:
-                // Check to see if the client credentials are valid (usually stored in Authorization header)
+                // Check to see if the client credentials are valid
+                // (usually stored in Authorization header)
                 break;
                 // OR return ErrorType.InvalidClient
 
