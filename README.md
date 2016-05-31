@@ -3,6 +3,11 @@ A Nancy module for adding OAuth2 support.
 
 Based on work by [thecodejunkie](https://github.com/thecodejunkie/Nancy.OAuth2)
 
+Nancy.OAuth2 is available via [NuGet](https://www.nuget.org/packages/Nancy.OAuth2/):
+```PowerShell
+Install-Package Nancy.OAuth2
+```
+
 ## Getting Started
 
 Install the module
