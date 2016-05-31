@@ -47,14 +47,14 @@ namespace Nancy.OAuth2.Modules
 
         private dynamic Allow()
         {
-            var token = _service.GenerateAuthorizationToken(Context);
             var request = Session[Context.CurrentUser.UserName] as AuthorizationRequest;
-
+            
             if (request == null)
             {
                 return HttpStatusCode.InternalServerError;
             }
 
+            var token = _service.GenerateAuthorizationToken(request, Context);
             var response = new AuthorizationResponse
             {
                 Code = token,

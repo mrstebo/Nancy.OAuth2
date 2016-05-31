@@ -5,7 +5,7 @@ namespace Nancy.OAuth2.Services
 {
     public class NullAuthorizationEndpointService : IAuthorizationEndpointService
     {
-        public string GenerateAuthorizationToken(NancyContext context)
+        public string GenerateAuthorizationToken(AuthorizationRequest request, NancyContext context)
         {
             throw new NotImplementedException();
         }

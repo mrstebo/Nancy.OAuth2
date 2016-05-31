@@ -185,7 +185,7 @@ namespace Nancy.OAuth2.IntegrationTests.Modules
 
         class AuthorizationEndpointServiceStub : IAuthorizationEndpointService
         {
-            public string GenerateAuthorizationToken(NancyContext context)
+            public string GenerateAuthorizationToken(AuthorizationRequest request, NancyContext context)
             {
                 return "12345678";
             }
