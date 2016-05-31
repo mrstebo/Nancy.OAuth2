@@ -61,7 +61,7 @@ namespace Nancy.OAuth2.Modules
                 State = request.State
             };
 
-            var uri = new UriBuilder(request.RedirectUrl) {Query = response.AsQueryString()};
+            var uri = new UriBuilder(request.RedirectUrl) {Query = response.AsQueryString().TrimStart('?')};
 
             return Response.AsRedirect(uri.ToString());
         }

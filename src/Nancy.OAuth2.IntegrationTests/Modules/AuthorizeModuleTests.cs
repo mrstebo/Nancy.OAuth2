@@ -100,7 +100,7 @@ namespace Nancy.OAuth2.IntegrationTests.Modules
 
             var response = browser.Post("/oauth/authorize/allow", with => with.HttpRequest());
 
-            response.ShouldHaveRedirectedTo("http://localhost:80/callback??code=12345678&state=123");
+            response.ShouldHaveRedirectedTo("http://localhost:80/callback?code=12345678&state=123");
         }
 
         [Test]
