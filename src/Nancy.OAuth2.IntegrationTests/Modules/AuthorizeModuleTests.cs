@@ -40,7 +40,7 @@ namespace Nancy.OAuth2.IntegrationTests.Modules
                 with.HttpRequest();
                 with.Query("response_type", "code");
                 with.Query("client_id", "bad");
-                with.Query("redirect_url", "http://localhost/callback");
+                with.Query("redirect_uri", "http://localhost/callback");
                 with.Query("state", "123");
             });
 
@@ -92,7 +92,7 @@ namespace Nancy.OAuth2.IntegrationTests.Modules
                 {
                     "testuser", new AuthorizationRequest
                     {
-                        RedirectUrl = "http://localhost/callback",
+                        RedirectUri = "http://localhost/callback",
                         State = "123"
                     }
                 }
@@ -131,7 +131,7 @@ namespace Nancy.OAuth2.IntegrationTests.Modules
                 {
                     "testuser", new AuthorizationRequest
                     {
-                        RedirectUrl = "http://localhost/callback",
+                        RedirectUri = "http://localhost/callback",
                         State = "123"
                     }
                 }

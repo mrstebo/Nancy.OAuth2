@@ -35,7 +35,7 @@ namespace Nancy.OAuth2.Modules
 
             if (!result.IsValid)
             {
-                return Response.AsErrorResponse(BuildErrorResponse(result.ErrorType, request.State), request.RedirectUrl);
+                return Response.AsErrorResponse(BuildErrorResponse(result.ErrorType, request.State), request.RedirectUri);
             }
 
             Session[Context.CurrentUser.UserName] = request;
@@ -61,7 +61,7 @@ namespace Nancy.OAuth2.Modules
                 State = request.State
             };
 
-            var uri = new UriBuilder(request.RedirectUrl) {Query = response.AsQueryString().TrimStart('?')};
+            var uri = new UriBuilder(request.RedirectUri) {Query = response.AsQueryString().TrimStart('?')};
 
             return Response.AsRedirect(uri.ToString());
         }
@@ -73,7 +73,7 @@ namespace Nancy.OAuth2.Modules
             return request == null
                 ? HttpStatusCode.InternalServerError
                 : Response.AsErrorResponse(BuildErrorResponse(ErrorType.AccessDenied, request.State),
-                    request.RedirectUrl);
+                    request.RedirectUri);
         }
 
         private ErrorResponse BuildErrorResponse(ErrorType errorType, string state = null)
