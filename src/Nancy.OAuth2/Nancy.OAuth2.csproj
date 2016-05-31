@@ -66,8 +66,6 @@
     <Compile Include="ResponseFormatterExtensions.cs" />
     <Compile Include="Services\IAuthorizationEndpointService.cs" />
     <Compile Include="Services\ITokenEndpointService.cs" />
-    <Compile Include="Services\NullAuthorizationEndpointService.cs" />
-    <Compile Include="Services\NullTokenEndpointService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
