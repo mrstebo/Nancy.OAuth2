@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using Nancy.Bootstrapper;
 
-namespace Nancy.OAuth2.IntegrationTests
+namespace Nancy.OAuth2.Tests
 {
-    static class BootstrapperExtensions
+    internal static class BootstrapperExtensions
     {
         public static void WithSession(this IPipelines pipeline, IDictionary<string, object> session)
         {

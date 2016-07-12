@@ -1,6 +1,6 @@
-﻿namespace Nancy.OAuth2.IntegrationTests
+﻿namespace Nancy.OAuth2.Tests
 {
-    class TestRootPathProvider : IRootPathProvider
+    internal class TestRootPathProvider : IRootPathProvider
     {
         public string GetRootPath()
         {

@@ -5,7 +5,7 @@ using Nancy.OAuth2.Services;
 using Nancy.Testing;
 using NUnit.Framework;
 
-namespace Nancy.OAuth2.IntegrationTests.Modules
+namespace Nancy.OAuth2.Tests.Modules
 {
     [TestFixture]
     public class TokenModuleTests

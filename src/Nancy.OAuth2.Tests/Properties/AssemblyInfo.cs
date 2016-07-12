@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Nancy.OAuth2.IntegrationTests")]
+[assembly: AssemblyTitle("Nancy.OAuth2.Tests")]
 [assembly: AssemblyDescription("A Nancy module for adding OAuth2 support")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("mrstebo")]
-[assembly: AssemblyProduct("Nancy.OAuth2.IntegrationTests")]
+[assembly: AssemblyProduct("Nancy.OAuth2.Tests")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

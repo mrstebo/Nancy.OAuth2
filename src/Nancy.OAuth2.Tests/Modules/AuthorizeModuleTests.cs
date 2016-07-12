@@ -8,7 +8,7 @@ using Nancy.Security;
 using Nancy.Testing;
 using NUnit.Framework;
 
-namespace Nancy.OAuth2.IntegrationTests.Modules
+namespace Nancy.OAuth2.Tests.Modules
 {
     [TestFixture]
     public class AuthorizeModuleTests

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Nancy.OAuth2.IntegrationTests
+namespace Nancy.OAuth2.Tests
 {
-    public static class StubFactory
+    internal static class StubFactory
     {
         private static readonly Dictionary<Type, Type> Registrations = new Dictionary<Type, Type>();
 
