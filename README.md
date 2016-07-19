@@ -1,4 +1,4 @@
-[![Build status](https://ci.appveyor.com/api/projects/status/850jf5qhe5gxnepo?svg=true)](https://ci.appveyor.com/project/mrstebo/nancy-oauth2)
+[![Build status](https://ci.appveyor.com/api/projects/status/850jf5qhe5gxnepo/branch/master?svg=true)](https://ci.appveyor.com/project/mrstebo/nancy-oauth2/branch/master)
 
 # Nancy.OAuth2
 A Nancy module for adding OAuth2 support.
