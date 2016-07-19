@@ -1,4 +1,4 @@
-[![Build status](https://ci.appveyor.com/api/projects/status/850jf5qhe5gxnepo/branch/master?svg=true)](https://ci.appveyor.com/project/mrstebo/nancy-oauth2/branch/master)
+[![Build status](https://ci.appveyor.com/api/projects/status/850jf5qhe5gxnepo/branch/master?svg=true)](https://ci.appveyor.com/project/mrstebo/nancy-oauth2/branch/master) [![MyGet Prerelease](https://img.shields.io/myget/mrstebo/v/Nancy.OAuth2.svg?label=MyGet_Prerelease)](https://www.myget.org/feed/mrstebo/package/nuget/Nancy.OAuth2) [![NuGet Version](https://img.shields.io/nuget/v/Nancy.OAuth2.svg)](https://www.nuget.org/packages/Nancy.OAuth2/)
 
 # Nancy.OAuth2
 A Nancy module for adding OAuth2 support.
