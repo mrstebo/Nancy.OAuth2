@@ -68,6 +68,8 @@
     <Compile Include="Modules\AuthorizeModuleTests.cs" />
     <Compile Include="Modules\TokenModuleTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\DefaultAuthorizationEndpointServiceTests.cs" />
+    <Compile Include="Services\DefaultTokenEndpointServiceTests.cs" />
     <Compile Include="StubFactory.cs" />
     <Compile Include="TestRootPathProvider.cs" />
   </ItemGroup>
