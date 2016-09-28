@@ -64,6 +64,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QueryStringExtensions.cs" />
     <Compile Include="ResponseFormatterExtensions.cs" />
+    <Compile Include="Services\DefaultAuthorizationEndpointService.cs" />
+    <Compile Include="Services\DefaultTokenEndpointService.cs" />
     <Compile Include="Services\IAuthorizationEndpointService.cs" />
     <Compile Include="Services\ITokenEndpointService.cs" />
   </ItemGroup>
