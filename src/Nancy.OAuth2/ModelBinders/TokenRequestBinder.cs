@@ -14,6 +14,8 @@ namespace Nancy.OAuth2.ModelBinders
                 GrantType = context.Request.Form["grant_type"],
                 Username = context.Request.Form["username"],
                 Password = context.Request.Form["password"],
+                ClientId = context.Request.Form["client_id"],
+                ClientSecret = context.Request.Form["client_secret"],
                 Code = context.Request.Form["code"],
                 RedirectUri = context.Request.Form["redirect_uri"],
                 Scope = context.Request.Form["scope"]
