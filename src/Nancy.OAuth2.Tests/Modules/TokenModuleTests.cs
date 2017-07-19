@@ -104,5 +104,33 @@ namespace Nancy.OAuth2.Tests.Modules
             Assert.AreEqual("test", body.Scope);
             Assert.AreEqual("bearer", body.TokenType);
         }
+
+        [Test]
+        public void Post_Should_Put_Form_Values_Into_TokenRequest()
+        {
+            _browser.Post("/oauth/token", with =>
+            {
+                with.HttpRequest();
+                with.FormValue("grant_type", GrantTypes.Password);
+                with.FormValue("username", "myusername");
+                with.FormValue("password", "mypassword");
+                with.FormValue("client_id", "my-client-id");
+                with.FormValue("client_secret", "my-client-secret");
+                with.FormValue("code", "123");
+                with.FormValue("redirect_uri", "http://nancy-oauth.com/redirect");
+                with.FormValue("scope", "my-scope");
+            });
+
+            A.CallTo(() => _tokenEndpointService.ValidateRequest(A<TokenRequest>.That.Matches(x =>
+                    x.GrantType == GrantTypes.Password &&
+                    x.Username == "myusername" &&
+                    x.Password == "mypassword" &&
+                    x.ClientId == "my-client-id" &&
+                    x.ClientSecret == "my-client-secret" &&
+                    x.Code == "123" &&
+                    x.RedirectUri == "http://nancy-oauth.com/redirect" &&
+                    x.Scope == new[] {"my-scope"}), A<NancyContext>.Ignored))
+                .MustHaveHappened(Repeated.Exactly.Once);
+        }
     }
 }
