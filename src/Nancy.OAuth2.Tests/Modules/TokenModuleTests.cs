@@ -1,4 +1,5 @@
-﻿using Nancy.OAuth2.Enums;
+﻿using FakeItEasy;
+using Nancy.OAuth2.Enums;
 using Nancy.OAuth2.Models;
 using Nancy.OAuth2.Modules;
 using Nancy.OAuth2.Services;
@@ -8,14 +9,34 @@ using NUnit.Framework;
 namespace Nancy.OAuth2.Tests.Modules
 {
     [TestFixture]
+    [Parallelizable]
     public class TokenModuleTests
     {
+        [SetUp]
+        public void SetUp()
+        {
+            _tokenEndpointService = A.Fake<ITokenEndpointService>();
+            _browser = new Browser(with =>
+            {
+                with.EnableAutoRegistration();
+                with.Module<TokenModule>();
+                with.Dependency(_tokenEndpointService);
+                with.Dependency(new DefaultErrorResponseBuilder());
+                with.ApplicationStartup((x, y) => OAuth.Enable());
+            });
+        }
+
+        private ITokenEndpointService _tokenEndpointService;
+        private Browser _browser;
+
         [Test]
         public void Post_With_Invalid_Grant_Type_Should_Return_404()
         {
-            var browser = GetBrowser();
+            A.CallTo(() => _tokenEndpointService.ValidateRequest(A<TokenRequest>.That.Matches(x =>
+                    x.GrantType == "bad_grant"), A<NancyContext>.Ignored))
+                .Returns(ErrorType.InvalidGrant);
 
-            var response = browser.Post("/oauth/token", with =>
+            var response = _browser.Post("/oauth/token", with =>
             {
                 with.HttpRequest();
                 with.FormValue("grant_type", "bad_grant");
@@ -27,9 +48,11 @@ namespace Nancy.OAuth2.Tests.Modules
         [Test]
         public void Post_With_Invalid_Grant_Type_Should_Return_ErrorResponse()
         {
-            var browser = GetBrowser();
+            A.CallTo(() => _tokenEndpointService.ValidateRequest(A<TokenRequest>.That.Matches(x =>
+                    x.GrantType == "bad_grant"), A<NancyContext>.Ignored))
+                .Returns(ErrorType.InvalidGrant);
 
-            var response = browser.Post("/oauth/token", with =>
+            var response = _browser.Post("/oauth/token", with =>
             {
                 with.HttpRequest();
                 with.FormValue("grant_type", "bad_grant");
@@ -43,9 +66,7 @@ namespace Nancy.OAuth2.Tests.Modules
         [Test]
         public void Post_With_Valid_Grant_Should_Return_200()
         {
-            var browser = GetBrowser();
-
-            var response = browser.Post("/oauth/token", with =>
+            var response = _browser.Post("/oauth/token", with =>
             {
                 with.HttpRequest();
                 with.FormValue("grant_type", GrantTypes.Password);
@@ -57,9 +78,19 @@ namespace Nancy.OAuth2.Tests.Modules
         [Test]
         public void Post_With_Valid_Grant_Should_Return_TokenResponse()
         {
-            var browser = GetBrowser();
+            var tokenResponse = new TokenResponse
+            {
+                AccessToken = "123",
+                RefreshToken = "abc",
+                ExpiresIn = 86400,
+                Scope = "test",
+                TokenType = "bearer"
+            };
 
-            var response = browser.Post("/oauth/token", with =>
+            A.CallTo(() => _tokenEndpointService.CreateTokenResponse(A<TokenRequest>.Ignored, A<NancyContext>.Ignored))
+                .Returns(tokenResponse);
+
+            var response = _browser.Post("/oauth/token", with =>
             {
                 with.HttpRequest();
                 with.FormValue("grant_type", GrantTypes.Password);
@@ -68,45 +99,10 @@ namespace Nancy.OAuth2.Tests.Modules
 
             Assert.IsNotNull(body);
             Assert.AreEqual("123", body.AccessToken);
-            Assert.AreEqual("bearer", body.TokenType);
+            Assert.AreEqual("abc", body.RefreshToken);
             Assert.AreEqual(86400, body.ExpiresIn);
-        }
-
-        private static Browser GetBrowser()
-        {
-            return new Browser(with =>
-            {
-                with.EnableAutoRegistration();
-                with.Module<TokenModule>();
-                with.Dependency(new TokenEndpointServiceStub());
-                with.Dependency(new DefaultErrorResponseBuilder());
-                with.ApplicationStartup((x, y) => OAuth.Enable());
-            });
-        }
-
-        class TokenEndpointServiceStub : ITokenEndpointService
-        {
-            public OAuthValidationResult ValidateRequest(TokenRequest request, NancyContext context)
-            {
-                switch (request.GrantType)
-                {
-                    case GrantTypes.Password:
-                        return ErrorType.None;
-
-                    default:
-                        return ErrorType.InvalidGrant;
-                }
-            }
-
-            public TokenResponse CreateTokenResponse(TokenRequest request, NancyContext context)
-            {
-                return new TokenResponse
-                {
-                    AccessToken = "123",
-                    TokenType = "bearer",
-                    ExpiresIn = 86400
-                };
-            }
+            Assert.AreEqual("test", body.Scope);
+            Assert.AreEqual("bearer", body.TokenType);
         }
     }
 }
