@@ -12,6 +12,8 @@ Install-Package Nancy.OAuth2
 
 ## Getting Started
 
+*Note: In the following examples, `IOAuthService` and `IUserService` would be your own implementations*
+
 Install the module
 ```csharp
 public class Bootstrapper : DefaultNancyBootstrapper
@@ -28,6 +30,12 @@ public class Bootstrapper : DefaultNancyBootstrapper
             config.TokenRoute = "/token";
         });
 
+        // If you are using the authorization_code grant, then register your implementation
+        container.Register<IAuthorizationEndpointService, AuthorizationEndpointService>();
+
+        // Register your implementation of the ITokenEndpointService
+        container.Register<ITokenEndpointService, TokenEndpointService>();
+
         base.RequestStartup(container, pipelines, context);
     }
 }
@@ -38,26 +46,65 @@ Create a class that implements the `ITokenEndpointService` interface.
 ```csharp
 public class TokenEndpointService : ITokenEndpointService
 {
+    private readonly IOAuthService _oauthService;
+    private readonly IUserService _userService;
+
+    public TokenEndpointService(
+        IOAuthService oauthService,
+        IUserService userService)
+    {
+        _oauthService = oauthService;
+        _userService = userService;
+    }
+
     public OAuthValidationResult ValidateRequest(TokenRequest request, NancyContext context)
     {
+        if (!IsValidClient(request.ClientId, request.ClientSecret))
+            return ErrorType.InvalidClient;
+
         // Only allow certain grant types
         switch (request.GrantType)
         {
             case GrantTypes.Password:
-                // Check to see if the client credentials are valid
-                // (usually stored in Authorization header)
-                break;
-                // OR return ErrorType.InvalidClient
+                return ValidatePasswordGrant(request);
+
+            case GrantTypes.Authorization:
+                return ValidateAuthorizationCodeGrant(request);
 
             default:
                 return ErrorType.InvalidGrant;
         }
-        return ErrorType.None;
     }
 
     public TokenResponse CreateTokenResponse(TokenRequest request, NancyContext context)
     {
+        // Build a token and store it somewhere so you can validate it later
         return BuildTokenResponse(request, context);
+    }
+
+    private bool IsValidClient(string clientId, string clientSecret)
+    {
+        var client = _oauthService.FindClientById(request.ClientId);
+
+        return client != null && client.ClientSecret == clientSecret;
+    }
+
+    private OAuthValidationResult ValidatePasswordGrant(TokenRequest request)
+    {
+        var user = _userService.FindUserByUsername(request.Username);
+
+        return user == null || user.HasValidPassword(request.Password)
+            ? ErrorType.InvalidGrant
+            : ErrorType.None;
+    }
+
+    private OAuthValidationResult ValidateAuthorizationCodeGrant(TokenRequest request)
+    {
+        var authCode = _oauthService.FindAuthorizationCode(request.Code);
+
+        return authCode == null
+            ? ErrorType.InvalidGrant
+            : ErrorType.None;
     }
 }
 ```
