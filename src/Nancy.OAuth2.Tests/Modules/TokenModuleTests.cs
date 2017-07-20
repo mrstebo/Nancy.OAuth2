@@ -1,4 +1,5 @@
-﻿using FakeItEasy;
+﻿using System.Linq;
+using FakeItEasy;
 using Nancy.OAuth2.Enums;
 using Nancy.OAuth2.Models;
 using Nancy.OAuth2.Modules;
@@ -118,7 +119,8 @@ namespace Nancy.OAuth2.Tests.Modules
                 with.FormValue("client_secret", "my-client-secret");
                 with.FormValue("code", "123");
                 with.FormValue("redirect_uri", "http://nancy-oauth.com/redirect");
-                with.FormValue("scope", "my-scope");
+                with.FormValue("scope", "my-scope-1");
+                with.FormValue("scope", "my-scope-2");
             });
 
             A.CallTo(() => _tokenEndpointService.ValidateRequest(A<TokenRequest>.That.Matches(x =>
@@ -129,7 +131,34 @@ namespace Nancy.OAuth2.Tests.Modules
                     x.ClientSecret == "my-client-secret" &&
                     x.Code == "123" &&
                     x.RedirectUri == "http://nancy-oauth.com/redirect" &&
-                    x.Scope == new[] {"my-scope"}), A<NancyContext>.Ignored))
+                    x.Scope.All(y => y == "my-scope-1" || y == "my-scope-2")), A<NancyContext>.Ignored))
+                .MustHaveHappened(Repeated.Exactly.Once);
+        }
+
+        [Test]
+        public void Post_Should_Handle_No_Scopes_On_Form()
+        {
+            _browser.Post("/oauth/token", with =>
+            {
+                with.HttpRequest();
+                with.FormValue("grant_type", GrantTypes.Password);
+                with.FormValue("username", "myusername");
+                with.FormValue("password", "mypassword");
+                with.FormValue("client_id", "my-client-id");
+                with.FormValue("client_secret", "my-client-secret");
+                with.FormValue("code", "123");
+                with.FormValue("redirect_uri", "http://nancy-oauth.com/redirect");
+            });
+
+            A.CallTo(() => _tokenEndpointService.ValidateRequest(A<TokenRequest>.That.Matches(x =>
+                    x.GrantType == GrantTypes.Password &&
+                    x.Username == "myusername" &&
+                    x.Password == "mypassword" &&
+                    x.ClientId == "my-client-id" &&
+                    x.ClientSecret == "my-client-secret" &&
+                    x.Code == "123" &&
+                    x.RedirectUri == "http://nancy-oauth.com/redirect" &&
+                    !x.Scope.Any()), A<NancyContext>.Ignored))
                 .MustHaveHappened(Repeated.Exactly.Once);
         }
     }
