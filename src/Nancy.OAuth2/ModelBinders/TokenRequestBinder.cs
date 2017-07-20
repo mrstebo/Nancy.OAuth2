@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Nancy.ModelBinding;
 using Nancy.OAuth2.Models;
 
@@ -14,15 +15,22 @@ namespace Nancy.OAuth2.ModelBinders
                 GrantType = context.Request.Form["grant_type"],
                 Username = context.Request.Form["username"],
                 Password = context.Request.Form["password"],
+                ClientId = context.Request.Form["client_id"],
+                ClientSecret = context.Request.Form["client_secret"],
                 Code = context.Request.Form["code"],
                 RedirectUri = context.Request.Form["redirect_uri"],
-                Scope = context.Request.Form["scope"]
+                Scope = ParseScope(context.Request.Form["scope"])
             };
         }
 
         public bool CanBind(Type modelType)
         {
             return modelType == typeof (TokenRequest);
+        }
+
+        private static IEnumerable<string> ParseScope(string value)
+        {
+            return (value ?? "").Split(new[] {","}, StringSplitOptions.RemoveEmptyEntries);
         }
     }
 }

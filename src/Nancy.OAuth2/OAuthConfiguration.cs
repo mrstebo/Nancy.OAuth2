@@ -34,7 +34,7 @@ namespace Nancy.OAuth2
 
             var value = member.GetValue(this, null);
 
-            return String.Concat(Base, "/", value);
+            return string.Concat(Base, "/", value);
         }
     }
 }
